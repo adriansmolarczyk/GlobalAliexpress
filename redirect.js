@@ -1,27 +1,27 @@
-const requiredUrls = ["*://aliexpress.ru/*", "*://aliexpress.com/*", "*://*.aliexpress.com/*", "*://*.aliexpress.ru/*"];
+const requiredUrls = ["*://aliexpress.pl/*", "*://aliexpress.com/*", "*://*.aliexpress.com/*", "*://*.aliexpress.pl/*"];
 // Currently it seems to be impossible to redirect store pages :(
-const storeRegexp = new RegExp('^http(s)?\:\/\/([a-z0-9]+.)?aliexpress\.ru\/store', 'i');
+const storeRegexp = new RegExp('^http(s)?\:\/\/([a-z0-9]+.)?aliexpress\.pl\/store', 'i');
 
-const domainRegexp = new RegExp('^http(s)?\:\/\/([a-z0-9]+.)?aliexpress\.ru', 'i');
-const subdomainRegexp = new RegExp('^http(s)?\:\/\/ru\.aliexpress\.com', 'i');
-const pathRegexp = new RegExp('^http(s)?\:\/\/([a-z].)?aliexpress\.com\/ru\//', 'i');
+const domainRegexp = new RegExp('^http(s)?\:\/\/([a-z0-9]+.)?aliexpress\.pl', 'i');
+const subdomainRegexp = new RegExp('^http(s)?\:\/\/pl\.aliexpress\.com', 'i');
+const pathRegexp = new RegExp('^http(s)?\:\/\/([a-z].)?aliexpress\.com\/pl\//', 'i');
 
 function globalURL(requestDetails) {
     var requestUrl = requestDetails.url;
     if (storeRegexp.test(requestUrl)) {
         return;
     } else if (domainRegexp.test(requestUrl)) {
-        let globalSite = requestUrl.replace(/aliexpress\.ru/g, "aliexpress.com");
+        let globalSite = requestUrl.replace(/aliexpress\.pl/g, "aliexpress.com");
         return {
             redirectUrl: globalSite
         };
     } else if (subdomainRegexp.test(requestUrl)) {
-        let globalSite = requestUrl.replace("ru.aliexpress.com", "www.aliexpress.com");
+        let globalSite = requestUrl.replace("pl.aliexpress.com", "www.aliexpress.com");
         return {
             redirectUrl: globalSite
         };
     } else if (pathRegexp.test(requestUrl)) {
-        let globalSite = requestUrl.replace("aliexpress.com/ru/", "aliexpress.com/");
+        let globalSite = requestUrl.replace("aliexpress.com/pl/", "aliexpress.com/");
         return {
             redirectUrl: globalSite
         };
@@ -32,7 +32,7 @@ function globalURL(requestDetails) {
 function globalURLReqHeaders(reqDetails) {
     for (let header of reqDetails.requestHeaders) {
         if (header.name === "Cookie") {
-            header.value = header.value.replace(/locale\=ru\_RU/g, "locale=en_US").replace(/site\=rus/g, "site=glo");
+            header.value = header.value.replace(/locale\=pl\_PL/g, "locale=en_US").replace(/site\=pol/g, "site=glo");
         }
     }
     return {
@@ -43,7 +43,7 @@ function globalURLReqHeaders(reqDetails) {
 function globalURLRespHeaders(respDetails) {
     for (let header of respDetails.responseHeaders) {
         if (header.name == "set-cookie") {
-            header.value = header.value.replace(/locale\=ru\_RU/g, "locale=en_US").replace(/site\=rus/g, "site=glo");
+            header.value = header.value.replace(/locale\=pl\_PL/g, "locale=en_US").replace(/site\=pol/g, "site=glo");
         }
     }
     return {
