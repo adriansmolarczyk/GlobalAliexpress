@@ -8,8 +8,8 @@
     "permissions": [
         "webRequest",
         "webRequestBlocking",
-        "*://aliexpress.ru/*",
-        "*://*.aliexpress.ru/*",
+        "*://aliexpress.pl/*",
+        "*://*.aliexpress.pl/*",
         "*://*.aliexpress.com/*",
         "*://aliexpress.com/*"
     ],
